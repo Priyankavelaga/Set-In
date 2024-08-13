@@ -14,10 +14,10 @@ from flask_cors import CORS
 from datetime import timedelta
 
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gen-lang-client-0912025258-2c242622e8b9.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'YOUR_SERVICE_ACCOUNT.json'
 
 storage_client = storage.Client()
-BUCKET_NAME = 'set-in'
+BUCKET_NAME = '<YOUR_BUCKET_NAME'>
 
 app = Flask(__name__)
 CORS(app)
@@ -26,7 +26,7 @@ CORS(app)
 load_dotenv()
 
 
-credentials = service_account.Credentials.from_service_account_file('gen-lang-client-0912025258-2c242622e8b9.json')
+credentials = service_account.Credentials.from_service_account_file('YOUR_SERVICE_ACCOUNT.json')
 vision_client = vision.ImageAnnotatorClient(credentials=credentials)
 
 
