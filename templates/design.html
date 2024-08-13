@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SET-IN</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Playfair+Display:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f6ef;
+            color: #000000;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f6ef;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ccc;
+            z-index: 10;
+            position: relative;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #000000;
+            padding: 0 15px;
+            font-size: 16px;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .navbar a:hover {
+            color: #555555;
+        }
+        .logo {
+            font-weight: 600;
+            font-size: 34px;
+            line-height: 1.7;
+            font-family: 'Playfair Display', serif;
+            transform: scaleY(1.06);
+            transform-origin: bottom;
+        }
+        .renovate h1 {
+            font-size: 64px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            transform: scaleY(1.2);
+            transform-origin: bottom;
+        }
+        .renovate h2 {
+            font-size: 64px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #333;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            transform: scaleY(1.2);
+            text-align: left; 
+            padding-left: 40px; 
+            margin-left: 20px; 
+            padding-bottom: 40px;
+            padding-top: 40px;
+        }
+        .renovate p {
+            font-size: 18px;
+            color: #545252;
+            line-height: 1.5;
+            margin-top: 0;  
+            font-family: 'Playfair Display', serif;
+        }
+        .renovate a {
+            font-size: 18px;
+            color: #545252;
+            text-decoration: none;
+            border-bottom: 1px solid #545252;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .button-container button {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .button-container button:last-child {
+            margin-right: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-left: 40px;
+            padding-right: 20px;
+            margin-top: 40px;
+            padding-top: 80px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 600;
+            transform: scaleY(1.2); 
+            margin-bottom: 80px;
+            padding-bottom: 80px;
+        }
+        .form-container {
+            width: 35%;
+            height: 250px;
+            background-color: #E6E4E8; /* Background color similar to your form */
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+            text-align: center;
+            z-index: 1;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            padding-top: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 15px;
+        }
+        form label {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: left;
+        }
+        form select, form button, .file-upload {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+        form button {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+        form button:hover {
+            background-color: #555;
+        }
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+            border: 1px dashed #ccc;
+            cursor: pointer;
+        }
+        .file-upload span {
+            font-size: 24px;
+            color: #999;
+        }
+        .images-preview {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .image-preview span {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            padding: 2px 5px;
+        }
+        .designs-container {
+            display: none;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 20px;
+            margin-top: 0px;
+            margin-left: 20px;
+            padding-bottom: 20px;
+            z-index: 0;
+        }
+        .designs-container h2 {
+            margin-left: 20px;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+        .design-item {
+            flex-direction: flex-start;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-left: 20px;
+        }
+        #generatedDesigns {
+            display: flex;
+            flex-direction: row; 
+            flex-wrap: wrap; 
+        }
+        .design-item img {
+            width: 200px;
+            height: 300px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        .navbar a.active {
+            color: #000000;  
+            font-weight: bold;  
+        }
+        .wishlist-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .wishlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .wishlist-item .name-rating {
+            flex: 3;
+        }
+        .wishlist-item .status {
+            flex: 1;
+            text-align: center;
+        }
+        .wishlist-item .directions {
+            flex: 1;
+            text-align: right;
+        }
+        .status-open {
+            color: green;
+        }
+
+        .status-closed {
+            color: red;
+        }
+        .status-open::after {
+            content: "Open";
+            color: green;
+        }
+
+        .status-closed::after {
+            content: "Closed";
+            color: red;
+        }
+
+        .sitefooter {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .sitefooter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 88px;
+            font-weight: 500;
+            margin: 40px 0;
+            transform: scaleY(1);
+            transform-origin: bottom;
+        }
+        .sitefooter .footer {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 40px;
+        }
+        .sitefooter .footer a {
+            font-size: 20px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #545252;
+        }
+        .top-line {
+            border-top: 1px solid #ccc; 
+            margin-top: 100px;
+            padding: 15px 40px;
+            width: 100vw;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">SET-IN</div>
+        <div>
+            <a href="/fusion" class="{{ 'active' if active_page == 'fusion' else '' }}">Fusion</a>
+            <a href="/design" class="{{ 'active' if active_page == 'design' else '' }}">Design</a>
+            <a herf="/logout" id="logout-link">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-container">
+            <form id="roomForm">
+                <label for="room">Choose for ideas</label>
+                <select id="room" name="room" required>
+                    <option value="">Select an option</option>
+                    <option value="Bedroom">Bedroom</option>
+                    <option value="KitchenDesign">KitchenDesign</option>
+                    <option value="KitchenKit">KitchenKit</option>
+                    <option value="Living">Living</option>
+                    <option value="Dining">Dining</option>
+                    <option value="AccentWalls">AccentWalls</option>        
+                    <option value="Lounge">Lounge</option>        
+                    <option value="Backyard">Backyard</option>
+                    <option value="Doors">Doors</option>  
+                    <option value="WholeHousePalette">WholeHousePalette</option>        
+                </select>
+                <br>
+                <button type="submit">Submit</button>
+                <button type="button" id="clearButton">Clear</button>
+            </form>
+        </div>
+        <div class="designs-container" id="designsContainer">
+            <div style="display: flex; align-items: center;">
+                <h2 style="margin-right: 10px;">Designs</h2>
+                <button id="refreshButton" style="background: none; border: none; cursor: pointer; padding: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="black">
+                        <path d="M12 2v4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8h-2c0 5.52 4.48 10 10 10s10-4.48 10-10-4.48-10-10-10zm-6 9h2c0-2.21 1.79-4 4-4v4l5-5-5-5v4c-3.31 0-6 2.69-6 6z"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="generatedDesigns" style="display: flex; flex-wrap: nowrap; gap: 10px;"></div>
+        </div>
+    </div>
+    <div class="sitefooter">
+        <div class="top-line"></div>
+        <h2>SET-IN</h2>
+        <div class="footer">
+            <a href="/design">Design</a>
+            <a href="/fusion">Fusion</a>
+        </div>
+        <br>
+        <br>
+    </div>
+    <script>
+        const generatedImagesMax = 3;
+
+        document.getElementById('roomForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const designsContainer = document.getElementById('designsContainer');
+    const generatedDesigns = document.getElementById('generatedDesigns');
+    const style = document.getElementById('room').value;  // Capture selected style
+
+    generateImages(style, generatedDesigns, designsContainer);
+});
+
+
+document.getElementById('refreshButton').addEventListener('click', function() {
+    const generatedDesigns = document.getElementById('generatedDesigns');
+    const style = document.getElementById('room').value;  // Capture the current selected style
+
+    generateImages(style, generatedDesigns);
+});
+
+function generateImages(style, generatedDesigns, designsContainer) {
+    generatedDesigns.innerHTML = '';  // Clear previous designs
+
+    fetch('/generate_images', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ style: style }),  // Send selected style
+    })
+    .then(response => {
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('Unauthorized - please check your API key or access token.');
+            }
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.images && data.images.length > 0) {
+            console.log("Image URLs:", data.images);  // Log the image URLs
+
+            data.images.forEach(imageUrl => {
+                const designDiv = document.createElement('div');
+                designDiv.className = 'design-item';
+
+                const designImage = document.createElement('img');
+                designImage.src = imageUrl;
+                designDiv.appendChild(designImage);
+
+                generatedDesigns.appendChild(designDiv);
+            });
+
+            if (designsContainer) {
+                designsContainer.style.display = 'block';
+            }
+        } else {
+            console.error('No images found in the response');
+            alert('No images were generated. Please try again later.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while generating images. Please try again.');
+    });
+}
+
+const clearBtn = document.getElementById('clearButton');
+clearBtn.addEventListener('click', () => {
+    document.getElementById('roomForm').reset();
+
+    const designsContainer = document.getElementById('designsContainer');
+    designsContainer.style.display = 'none';
+
+    console.log("Form cleared");
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch('/logout', {
+            method: 'GET',
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+</body>
+</html>

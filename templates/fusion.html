@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SET-IN</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Playfair+Display:wght@400;700&display=swap">
+    <style>
+        body, html {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f6ef;
+            color: #000000;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f6ef;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ccc;
+            z-index: 10;
+            position: relative;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #000000;
+            padding: 0 15px;
+            font-size: 16px;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .navbar a:hover {
+            color: #555555;
+        }
+        .logo {
+            font-weight: 600;
+            font-size: 34px;
+            line-height: 1.7;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+            transform: scaleY(1.06);
+            transform-origin: bottom;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            justify-content: space-between; 
+            width: 96%;
+            padding: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 600;
+            max-width: 2000px;
+            margin-left: 5px; 
+            margin-right: 5px;
+        }
+        .form-container {
+            background-color: #E6E4E8;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        form label {
+            margin-top: 5px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        form input, form select, form button {
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Playfair Display', serif;
+            margin-right: 10px;
+        }
+        form input {
+            width: 200px;
+        }
+        form button {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        form button:hover {
+            background-color: #555;
+        }
+        .main-container {
+            display: flex;
+            height: calc(100vh - 100px); 
+        }
+        .search-container {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 10px; 
+        }
+
+        .pac-container {
+            z-index: 11; 
+            position: relative;
+            top: 100%; 
+            left: 0;
+            right: 0;
+        }
+        #map-container {
+            height: 100%;
+            flex: 1;
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            border-right: 2px solid #ddd;
+        }
+        #results-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0px;
+            left: 0;
+            top: 0;
+            background-color: #ffffff;
+        }
+        .output-container {
+            margin-top: 0px;
+            display: flex;
+            justify-content: space-between;
+            gap: 0px;
+            width: 50%;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .output-list {
+            width: 97%;
+            max-height: 100%;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .output-list h2 {
+            margin-top: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .output-list p {
+            font-size: 16px;
+            margin: 10px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .output-list p:last-child {
+            border-bottom: none;
+        }
+        .search-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .search-item .name-rating {
+            flex: 3;
+        }
+
+        .search-item .status {
+            flex: 1;
+            text-align: center;
+        }
+
+        .search-item .directions {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .navbar a.active {
+            color: #000000;  
+            font-weight: bold;  
+        }
+
+        .sitefooter {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .sitefooter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 500;
+            margin: 40px 0;
+        }
+        .sitefooter .footer {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 40px;
+        }
+        .sitefooter .footer a {
+            font-size: 20px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #545252;
+        }
+        .top-line {
+            border-top: 1px solid #ccc;
+            margin-top: 100px;
+            padding: 15px 40px;
+            width: 100vw;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">SET-IN</div>
+        <div>
+            <a href="/fusion" class="{{ 'active' if active_page == 'fusion' else '' }}">Fusion</a>
+            <a href="/design" class="{{ 'active' if active_page == 'design' else '' }}">Designs</a>
+            <a herf="/logout" id="logout-link">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-container">
+            <form id="fusionForm">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Search location..." required>
+                <label for="category">Search Criteria</label>
+                <select id="category" name="category" required>
+                    <option value="Furniture Stores">Furniture Stores</option>
+                    <option value="Electronic Stores">Electronic Stores</option>
+                    <option value="Electrician">Electricians</option>
+                    <option value="Plumbers">Plumbers</option>
+                    <option value="Interior Designers">Interior Designers</option>
+                </select>
+                <button type="submit">Search</button>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+            </form>
+        </div>
+        <div class="main-container">
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+            <div id="results-container">
+                <div class="output-list" id="output">
+                    <h2>Search Results</h2>
+                    
+                </div>
+            </div>
+        </div>
+    <div class="sitefooter">
+        <div class="top-line"></div>
+        <h2>SET-IN</h2>
+        <div class="footer">
+            <a href="/design">Design</a>
+            <a href="/fusion">Fusion</a>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATvg5Qwjuc6D_kufVFC5hj1UIl9ANMl1w&libraries=places&callback=initMap" async defer></script>
+
+    <script>
+        let map, marker, autocomplete;
+        let markers = []; 
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: { lat: 34.0754, lng: -84.2941 } 
+            });
+
+            const locationInput = document.getElementById('location');
+            autocomplete = new google.maps.places.Autocomplete(locationInput);
+            autocomplete.bindTo('bounds', map);
+
+            autocomplete.addListener('place_changed', function () {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    console.error("No details available for the input: '" + place.name + "'");
+                    return;
+                }
+
+                const userLocation = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng()
+                };
+
+                map.setCenter(userLocation);
+                map.setZoom(12);
+
+                if (marker) {
+                    marker.setPosition(userLocation);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                    });
+                }
+
+                document.getElementById('lat').value = userLocation.lat;
+                document.getElementById('lng').value = userLocation.lng;
+            });
+        }
+
+        document.getElementById('fusionForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const lat = document.getElementById('lat').value;
+            const lng = document.getElementById('lng').value;
+            const category = document.getElementById('category').value;
+            if (!lat || !lng) {
+                alert('Please select a valid location.');
+                return;
+            }
+
+
+            clearMarkers();
+
+            fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ lat, lng, category })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultContainer = document.getElementById('output');
+                resultContainer.innerHTML = `<h2>Search Results</h2>`;
+    
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach(result => {
+                        const status = result.opening_hours && result.opening_hours.open_now ? "Open" : "Closed";
+                        const statusColor = status === "Open" ? "green" : "red";
+                        resultContainer.innerHTML += `
+                            <div class="search-item">
+                                    <div class="name-rating">
+                                        <strong>${result.name}</strong><br>
+                                        Rating: ${result.rating} &#9733;<br>
+                                        Address: ${result.address}
+                                    </div>
+                                    <div class="status" style="color: ${statusColor};">
+                                        ${status}
+                                    </div>
+                                    <div class="directions">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination=${result.lat},${result.lng}" target="_blank">Directions</a>
+                                    </div>
+                                    <div class="like-btn">&#9829;</div>
+                                </div>`;
+                        addMarker(result);
+                    });
+                    document.querySelectorAll('.like-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = this.getAttribute('data-index');
+                            saveToWishlist(data.results[index]);
+                        });
+                    });
+                } else {
+                    resultContainer.innerHTML += `<p>No ${category} found in this location.</p>`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+    function clearMarkers() {
+        // Loop through markers array and set map to null for each
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = []; // Reset the markers array
+    }
+
+    function addMarker(place) {
+        const marker = new google.maps.Marker({
+            position: { lat: place.lat, lng: place.lng },
+            map: map,
+            title: place.name
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: `<strong>${place.name}</strong><br>${place.address}`
+        });
+
+        marker.addListener('click', () => {
+            infoWindow.open(map, marker);
+        });
+
+        markers.push(marker); 
+    }
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('like-btn')) {
+            event.target.style.color = event.target.style.color === 'red' ? '#ff6666' : 'red'; // Toggle color
+        }
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('logout-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch('/logout', {
+                    method: 'GET',
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+</html>
